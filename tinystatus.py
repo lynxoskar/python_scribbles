@@ -39,7 +39,7 @@ async def check_ping(host):
     except:
         return False
 
-async def check_port(host, port):
+async def check_port(host, port): 
     try:
         _, writer = await asyncio.open_connection(host, port)
         writer.close()
@@ -100,15 +100,25 @@ async def monitor_services():
             results = await run_checks(checks)
             update_history(results)
 
-            html = template.render(checks=results, incidents=incidents, last_updated=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            current_time = datetime.now()
+            formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
+            html = template.render(
+                checks=results, 
+                incidents=incidents, 
+                last_updated=formatted_time
+            )
             with open('index.html', 'w') as f:
                 f.write(html)
 
-            history_html = history_template.render(history=load_history(), last_updated=datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            history_html = history_template.render(
+                history=load_history(), 
+                last_updated=formatted_time
+            )
             with open('history.html', 'w') as f:
                 f.write(history_html)
 
-            logging.info(f"Status page and history updated at {datetime.now()}")
+            logging.info(f"Status page and history updated at {formatted_time}")
             down_services = [check['name'] for check in results if not check['status']]
             if down_services:
                 logging.warning(f"Services currently down: {', '.join(down_services)}")
@@ -124,6 +134,7 @@ def main():
         checks = yaml.safe_load(f)
 
     with open(INCIDENTS_FILE, 'r') as f:
+
         incidents = markdown.markdown(f.read())
 
     with open(TEMPLATE_FILE, 'r') as f:
@@ -137,4 +148,5 @@ def main():
 
 if __name__ == "__main__":
     logging.basicConfig(level=getattr(logging, LOG_LEVEL), format='%(asctime)s - %(levelname)s - %(message)s')
-    asyncio.run(monitor_services())
+
+    asyncio.run(monitor_services())  # Then start the monitoring loop

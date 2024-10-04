@@ -1,0 +1,5 @@
+
+set up docker with server
+set up docker with docker compose
+include nginx proxy to server
+set up looging to include https 
