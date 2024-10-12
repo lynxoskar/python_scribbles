@@ -4,15 +4,7 @@ import asyncio
 from aiohttp import web
 import lmdb
 import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-
-
-async def handle(request):
-   
-    import aiohttp
+import aiohttp
 from aiohttp import web
 
 async def handle(request):
@@ -23,8 +15,7 @@ async def handle(request):
     headers = request.headers.copy()  # Forward headers
     body = await request.read()  # Read the body for POST, PUT, etc.
 
-    # Remove the "Host" header, as the new request should set the Host for the target server
-    headers.pop('Host', None)
+    
     
     
     logger.info(f"Received {method} request to {url} with headers {headers} and body {body} req {request}")
@@ -34,14 +25,17 @@ async def handle(request):
         async with aiohttp.ClientSession() as session:
             # Make the outgoing request using the same method and data as the incoming request
             async with session.request(method, url, headers=headers, data=body) as resp:
+                
                 # Read the response body from the target server
+                ## check with lmdb if the call i allready cached
+
                 response_body = await resp.read()
 
                 # Create a hash key from the URL, method, and body
                 hash_key = hashlib.sha256(f"{url}{method}{body}".encode()).hexdigest()
 
                 # Open the LMDB environment and database
-                env = lmdb.open('/path/to/your/lmdb/database', max_dbs=1)
+                
                 db = env.open_db(b'responses')
 
                 with env.begin(write=True) as txn:
