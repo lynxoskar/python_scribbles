@@ -1,0 +1,9 @@
+<div class="response-card">
+    <h3 class="neon-text">Response for: {{ url }}</h3>
+    <div class="status-badge {% if result.status == 200 %}success{% else %}error{% endif %}">
+        Status: {{ result.status }}
+    </div>
+    <div class="response-content">
+        <pre><code>{{ result.content[:1000] }}{% if result.content|length > 1000 %}...{% endif %}</code></pre>
+    </div>
+</div>

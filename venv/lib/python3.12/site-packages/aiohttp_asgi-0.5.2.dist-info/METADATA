@@ -1,0 +1,138 @@
+Metadata-Version: 2.1
+Name: aiohttp-asgi
+Version: 0.5.2
+Summary: Adapter to running ASGI applications on aiohttp
+Home-page: https://github.com/mosquito/aiohttp-asgi
+License: Apache-2.0
+Keywords: aiohttp,asgi
+Author: Dmitry Orlov
+Author-email: me@mosquito.su
+Requires-Python: >=3.7,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Internet
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Requires-Dist: aiohttp (>=3,<4)
+Requires-Dist: typing_extensions ; python_version < "3.8"
+Project-URL: Documentation, https://github.com/mosquito/aiohttp-asgi/blob/master/README.md
+Project-URL: Source, https://github.com/mosquito/aiohttp-asgi
+Project-URL: Tracker, https://github.com/mosquito/aiohttp-asgi/issues
+Description-Content-Type: text/markdown
+
+aiohttp-asgi
+============
+
+[![PyPI - License](https://img.shields.io/pypi/l/aiohttp-asgi)](https://pypi.org/project/aiohttp-asgi) [![Wheel](https://img.shields.io/pypi/wheel/aiohttp-asgi)](https://pypi.org/project/aiohttp-asgi) [![PyPI](https://img.shields.io/pypi/v/aiohttp-asgi)](https://pypi.org/project/aiohttp-asgi) [![PyPI](https://img.shields.io/pypi/pyversions/aiohttp-asgi)](https://pypi.org/project/aiohttp-asgi) [![Coverage Status](https://coveralls.io/repos/github/mosquito/aiohttp-asgi/badge.svg?branch=master)](https://coveralls.io/github/mosquito/aiohttp-asgi?branch=master) ![tox](https://github.com/mosquito/aiohttp-asgi/workflows/tox/badge.svg?branch=master)
+
+This module provides a way to use any ASGI compatible frameworks and aiohttp together.
+
+Example
+-------
+
+```python
+from aiohttp import web
+from fastapi import FastAPI
+from starlette.requests import Request as ASGIRequest
+
+from aiohttp_asgi import ASGIResource
+
+
+asgi_app = FastAPI()
+
+
+@asgi_app.get("/asgi")
+async def root(request: ASGIRequest):
+    return {
+        "message": "Hello World",
+        "root_path": request.scope.get("root_path")
+    }
+
+
+aiohttp_app = web.Application()
+
+# Create ASGIResource which handle
+# any request startswith "/asgi"
+asgi_resource = ASGIResource(asgi_app, root_path="/asgi")
+
+# Register resource
+aiohttp_app.router.register_resource(asgi_resource)
+
+# Mount startup and shutdown events from aiohttp to ASGI app
+asgi_resource.lifespan_mount(aiohttp_app)
+
+# Start the application
+web.run_app(aiohttp_app)
+
+```
+
+Installation
+------------
+
+```bash
+pip install aiohttp-asgi
+```
+
+ASGI HTTP server
+----------------
+
+Command line tool for starting aiohttp web server with ASGI app.
+
+#### Example
+
+Create the `test_app.py`
+
+```python
+from starlette.applications import Starlette
+from starlette.responses import JSONResponse
+from starlette.routing import Route
+
+
+async def homepage(request):
+    return JSONResponse({'hello': 'world'})
+
+routes = [
+    Route("/", endpoint=homepage)
+]
+
+application = Starlette(debug=True, routes=routes)
+```
+
+and run the `test_app.py` with `aiohttp-asgi`
+
+```bash
+aiohttp-asgi \
+    --address "[::1]" \
+    --port 8080 \
+    test_app:application
+```
+
+alternatively using `python -m`
+
+```bash
+python -m aiohttp_asgi \
+    --address "[::1]" \
+    --port 8080 \
+    test_app:application
+```
+

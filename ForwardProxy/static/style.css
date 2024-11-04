@@ -1,0 +1,103 @@
+:root {
+    --neon-pink: #ff2b9d;
+    --neon-blue: #00f3ff;
+    --cyber-purple: #b000ff;
+    --cyber-bg: #0a0a16;
+    --cyber-grid: #1a1a2e;
+}
+
+body.cyber-theme {
+    background-color: var(--cyber-bg);
+    color: #fff;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    min-height: 100vh;
+    background-image: 
+        linear-gradient(0deg, transparent 24%, 
+            rgba(32, 32, 64, .05) 25%,
+            rgba(32, 32, 64, .05) 26%, 
+            transparent 27%, transparent 74%,
+            rgba(32, 32, 64, .05) 75%,
+            rgba(32, 32, 64, .05) 76%, 
+            transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, 
+            rgba(32, 32, 64, .05) 25%,
+            rgba(32, 32, 64, .05) 26%, 
+            transparent 27%, transparent 74%,
+            rgba(32, 32, 64, .05) 75%,
+            rgba(32, 32, 64, .05) 76%, 
+            transparent 77%, transparent);
+    background-size: 50px 50px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.neon-text {
+    color: var(--neon-blue);
+    text-shadow: 0 0 5px var(--neon-pink),
+                 0 0 10px var(--nneon-blue),
+                 0 0 20px var(--neon-pink);
+    font-size: 4rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.stats-table {
+    width: 100%;
+    overflow-x: auto;
+    margin: 2rem 0;
+}
+
+.cyber-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(16, 16, 32, 0.8);
+    border: 2px solid var(--neon-blue);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+}
+
+.cyber-table th,
+.cyber-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.2);
+}
+
+.cyber-table th {
+    background: rgba(0, 243, 255, 0.1);
+    color: var(--neon-blue);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.cyber-table tr:hover {
+    background: rgba(0, 243, 255, 0.05);
+}
+
+.cyber-button-small {
+    background: transparent;
+    border: 1px solid var(--neon-pink);
+    color: var(--neon-pink);
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.cyber-button-small:hover {
+    background: var(--neon-pink);
+    color: var(--cyber-bg);
+    box-shadow: 0 0 10px rgba(255, 43, 157, 0.5);
+}
+
+tr.htmx-swapping {
+    opacity: 0;
+    transition: opacity 1s ease-out;
+}

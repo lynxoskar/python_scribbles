@@ -1,0 +1,3 @@
+[console_scripts]
+aiohttp-asgi=aiohttp_asgi.__main__:main
+

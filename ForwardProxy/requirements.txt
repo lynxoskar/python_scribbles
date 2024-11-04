@@ -1,0 +1,12 @@
+aiohttp
+aiofiles
+dataclasses
+granian==0.7.5
+aiohttp
+python-multipart
+jinja2
+urllib3
+aiohttp_jinja2
+aiohttp-asgi
+time
+datetime 

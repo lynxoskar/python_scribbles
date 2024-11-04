@@ -3,3 +3,15 @@ history.html
 history.json
 nohup.out
 .env
+
+.DS_Store
+*.pyc
+__pycache__
+
+.idea/
+*.sublime-*
+.venv
+.vscode
+
+granian/*.so
+target/*

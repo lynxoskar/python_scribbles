@@ -1,0 +1,34 @@
+<div class="stats-table">
+    <table class="cyber-table">
+        <thead>
+            <tr>
+                <th>URI</th>
+                <th>Size</th>
+                <th>Requests</th>
+                <th>Created</th>
+                <th>Last Used</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for stat in stats %}
+            <tr>
+                <td>{{ stat.uri }}</td>
+                <td>{{ stat.size }}</td>
+                <td>{{ stat.number_of_requests }}</td>
+                <td>{{ stat.created_time }}</td>
+                <td>{{ stat.time_since_use }}</td>
+                <td>
+                    <button class="cyber-button-small"
+                            hx-delete="/cache/{{ stat.cacheKey }}"
+                            hx-method="delete"
+                            hx-target="closest tr"
+                            hx-swap="outerHTML swap:1s">
+                        Evict
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
