@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Proxy</title>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="cyber-theme">
+    <div class="container">
+        <header>
+            <h1 class="neon-text">CYBER PROXY</h1>
+            <div class="stats-container"
+                 hx-get="cache/stats"
+                 hx-trigger="load, every 2s">
+            </div>
+        </header>
+    </div>
+</body>
+</html>

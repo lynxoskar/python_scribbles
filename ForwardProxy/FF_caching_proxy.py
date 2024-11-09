@@ -217,9 +217,9 @@ async def delete_entry(request) -> web.Response:
     Returns:
         aiohttp.web.Response: The response indicating the success of the deletion.
     """
-    cache_key = request.match_info['cachekey']
+    cache_key = request.match_info['cacheKey']
     # cache_key = generate_key(uri, "GET")
-
+ 
     if cache_key in storedData:
         os.remove(storedData[cache_key].cachePath)
         del storedData[cache_key]
@@ -370,7 +370,7 @@ async def init_app() -> web.Application:
 
     app.router.add_route('GET', '/cache', get_index)
     app.router.add_route('GET', '/cache/stats', get_stats)
-    app.router.add_route('DELETE', '/cache/{cachekey}', delete_entry)
+    app.router.add_route('DELETE', '/cache/', delete_entry)
 
     app.router.add_route('*', '/{tail:.*}', main_dispatcher)
 
